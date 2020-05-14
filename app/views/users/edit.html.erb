@@ -1,0 +1,20 @@
+
+<h2>User info</h2>
+
+<%= form_for @user, :url => {controller: "users", action: "update"} do |f| %>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :image %><br>
+    <%= f.attachment_field :profile_image %>
+  </div>
+    <div class="field">
+    <%= f.label :introduction %><br>
+    <%= f.text_area :introduction %>
+  </div>
+  <div class="actions">
+    <%= f.submit 'Update User' %>
+  </div>
+<% end %>

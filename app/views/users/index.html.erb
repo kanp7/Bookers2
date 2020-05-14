@@ -1,0 +1,30 @@
+
+<div class="container">
+  <div class= "row">
+  	<div class="col-xs-3">
+   		<%= render 'shared/form', user: @user, book: @book %>
+  	</div>
+	<div class="col-xs-9">
+	<h2>Users</h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>image</th>
+				<th>name</th>
+				<th colspan="3"></th>
+			</tr>
+		</thead>
+		<% @users.each do |user| %>
+		<tbody>
+			<tr>
+				<td><%= attachment_image_tag user, :profile_image, :fill, 40, 40, format: 'jpeg', fallback: "no_image.jpg" ,size:'40x40' %></td>
+				<td><%= user.name %></td>
+				<td><%= link_to "show", user_path(user.id) %></td>
+			</tr>
+		</tbody>
+		<% end %>
+	</table>
+  	</div>
+  </div>
+</div>
+
