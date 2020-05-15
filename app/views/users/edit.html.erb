@@ -2,6 +2,11 @@
 <h2>User info</h2>
 
 <%= form_for @user, :url => {controller: "users", action: "update"} do |f| %>
+
+<div id="error_explanation" style="color: red;">
+  <%= render 'shared/error_messages', model: f.object %>
+</div>
+
   <div class="field">
     <%= f.label :name %><br>
     <%= f.text_field :name %>

@@ -21,14 +21,14 @@
         <ul class="nav navbar-nav navbar-right">
           <% if user_signed_in? %>
             <li> <%= link_to user_path(current_user) do %><i class="glyphicon glyphicon-home home"></i>&emsp;Home<% end %></li>
-            <li> <%= link_to users_path do %><i class="glyphicon glyphicon-user users"></i>&emsp;User<% end %></li>
+            <li> <%= link_to users_path do %><i class="glyphicon glyphicon-user users"></i>&emsp;Users<% end %></li>
             <li> <%= link_to books_path do %><i class="glyphicon glyphicon-book books"></i>&emsp;Books<% end %> </li>
             <li> <%= link_to destroy_user_session_path, method: :delete do %><i class="glyphicon glyphicon-log-out logout"></i>&emsp;logout<% end %></li>
           <% else %>
-            <li><%= link_to "Home", '/' %></li>
-            <li><%= link_to "About", "/home/about" %></li>
-            <li><%= link_to "sign up", new_user_registration_path %></li>
-            <li><%= link_to "login",  new_user_session_path %></li>
+            <li><%= link_to root_path do %><i class="glyphicon glyphicon-home home"></i>&emsp;Home<% end %></li>
+            <li><%= link_to "/home/about" do %><i class="glyphicon glyphicon-link about"></i>&emsp;About<% end %></li>
+            <li><%= link_to new_user_registration_path do %><i class="glyphicon glyphicon-edit sign_up"></i>&emsp;sign up<% end %></li>
+            <li><%= link_to new_user_session_path do %><i class="glyphicon glyphicon-log-in sign_in"></i>&emsp;login<% end %></li>
           <% end %>
         </ul>
       </nav>
@@ -41,6 +41,7 @@
     <div class="row">
       <div style="padding-top: 10px">
         <p><%= flash[:notice] %></p>
+         <%= render 'layouts/notifications' %>
       </div>
         <%= yield %>
     </div>
