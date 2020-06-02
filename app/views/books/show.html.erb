@@ -12,8 +12,20 @@
             <%= attachment_image_tag  @book.user, :profile_image, :fill, 40, 40, format: 'jpeg',fallback: "no_image.jpg",size:'40x40' %><br><%= @book.user.name%><% end %></td>
           <td><%= @book.title %></td>
           <td><%= @book.body %></td>
+          <!-- いいね機能 -->
+          <td><% if @book.favorited_by?(current_user) %>
+              <%= link_to book_favorites_path(@book), method: :delete do %>
+              <i class="fa fa-heart" aria-hidden="true" style="color: black;"></i>
+              <%= @book.favorites.count %> いいね
+              <% end %>
+            <% else %>
+              <%= link_to book_favorites_path(@book), method: :post do %>
+              <i class="fa fa-heart-o" aria-hidden="true"></i>
+              <%= @book.favorites.count %> いいね
+              <% end %>
+            <% end %>
+          </td>
           <td>コメント数: <%= @book.book_comments.count %></td>
-
           <% if @book.user == current_user %>
           <td><span class="btn-sm btn-success"><%= link_to "Edit", edit_book_path(@book) %></td></span>
           <td><span class="btn-sm btn-danger"><%= link_to "Destroy", book_path(@book), method: :delete, data: {confirm: "本当に削除しますか？"}  %></td></span>
@@ -21,9 +33,10 @@
         </tr>
       </tbody>
     </table>
+
     <!-- コメント本文 -->
     <% @book.book_comments.each do |book_comment| %>
-    <table class="table">
+    <table>
       <tbody>
         <tr>
           <td><%= attachment_image_tag  book_comment.user, :profile_image, :fill, 40, 40, format: 'jpeg',fallback: "no_image.jpg",size:'40x40' %><br><%= book_comment.user.name %>
@@ -39,12 +52,15 @@
       </tbody>
     </table>
      <% end %>
+
      <!-- コメント入力フォーム -->
      <%= form_for [@book, @book_comment] do |f| %>
         <div class="field_row">
-          <%= f.text_area :comment, class:"col-xs-12" %>
-        </div>
+          <%= f.text_area :comment, class:"col-xs-11" %>
+        </div><br>
+        <div>
           <%= f.submit '送信' %>
+        </div>
      <% end %>
     </div>
   </div>
