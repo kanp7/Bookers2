@@ -34,6 +34,29 @@
       </nav>
   </div>
 </header>
+<br>
+<br>
+<br>
+<!-- 検索フォーム -->
+<div style="text-align: center">
+  <% if user_signed_in? %>
+
+     <%= form_tag(search_path, method: :get) do %>
+
+  　　   <%= select_tag 'range' , options_for_select([
+          ['---選択してください---', ''], ['User', '1'], ['Book', '2']
+          ]) %>
+
+     　　<%= select_tag 'search', options_for_select([
+          ["前方一致","forward_match"], ["後方一致","backward_match"],
+          ["完全一致","perfect_match"], ["部分一致","partial_match"]
+        ]) %>
+
+     　　<%= text_field_tag (:word) %>
+     　　<%= submit_tag "検索" %>
+     <% end %>
+  <% end %>
+</div>
 
   <div class="container" style="margin-top: 50px;">
     <div class="row">

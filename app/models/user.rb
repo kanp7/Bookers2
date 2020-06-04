@@ -28,6 +28,21 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
+  # 検索機能 search_controllerにメソッドを定義
+  def self.search(search,word)
+    if search == "forward_match"
+      @user = User.where("name LIKE?", "#{word}%")
+    elsif search == "backward_match"
+      @user = User.where("name LIKE?", "%#{word}")
+    elsif search == "perfect_match"
+      @user = User.where("#{word}")
+    elsif search == "partial_match"
+      @user = User.where("name LIKE?", "%#{word}%")
+    else
+      @user = User.all
+    end
+  end
+
   attachment :profile_image
 
   validates :name, presence: true, length: { minimum: 2 , maximum: 20}
