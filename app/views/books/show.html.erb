@@ -13,18 +13,7 @@
           <td><%= @book.title %></td>
           <td><%= @book.body %></td>
           <!-- いいね機能 -->
-          <td><% if @book.favorited_by?(current_user) %>
-              <%= link_to book_favorites_path(@book), method: :delete do %>
-              <i class="fa fa-heart" aria-hidden="true" style="color: black;"></i>
-              <%= @book.favorites.count %> いいね
-              <% end %>
-            <% else %>
-              <%= link_to book_favorites_path(@book), method: :post do %>
-              <i class="fa fa-heart-o" aria-hidden="true"></i>
-              <%= @book.favorites.count %> いいね
-              <% end %>
-            <% end %>
-          </td>
+          <td id="favorite_<%= "#{@book.id}"%>"> <%= render "favorites/favorite", book: @book %></td>
           <td>コメント数: <%= @book.book_comments.count %></td>
           <% if @book.user == current_user %>
           <td><span class="btn-sm btn-success"><%= link_to "Edit", edit_book_path(@book) %></td></span>
@@ -34,27 +23,14 @@
       </tbody>
     </table>
 
-    <!-- コメント本文 -->
-    <% @book.book_comments.each do |book_comment| %>
-    <table>
-      <tbody>
-        <tr>
-          <td><%= attachment_image_tag  book_comment.user, :profile_image, :fill, 40, 40, format: 'jpeg',fallback: "no_image.jpg",size:'40x40' %><br><%= book_comment.user.name %>
-          </td>
-          <td>
-            <%= book_comment.comment %>
-          </td>
-          <% if book_comment.user == current_user %>
-          <td><%= link_to "Destroy", book_book_comment_path(book_comment.book, book_comment), method: :delete, class: "btn btn-danger pull-right" %>
-          <% end %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-     <% end %>
+    <!-- コメント一覧 -->
+    <div id="book_comments">
+      <%= render "book_comments/comment_index", book: @book %>
+    </div>
+
 
      <!-- コメント入力フォーム -->
-     <%= form_for [@book, @book_comment] do |f| %>
+     <%= form_with model:[@book, @book_comment] do |f| %>
         <div class="field_row">
           <%= f.text_area :comment, class:"col-xs-11" %>
         </div><br>
