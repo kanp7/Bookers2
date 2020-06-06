@@ -27,7 +27,7 @@
           <% else %>
             <li><%= link_to root_path do %><i class="glyphicon glyphicon-home home"></i>&emsp;Home<% end %></li>
             <li><%= link_to "/home/about" do %><i class="glyphicon glyphicon-link about"></i>&emsp;About<% end %></li>
-            <li><%= link_to new_user_registration_path do %><i class="glyphicon glyphicon-edit sign_up"></i>&emsp;sign up<% end %></li>
+            <li><%= link_to new_user_registration_path, data: {"turbolinks" => false} do %><i class="glyphicon glyphicon-edit sign_up"></i>&emsp;sign up<% end %></li>
             <li><%= link_to new_user_session_path do %><i class="glyphicon glyphicon-log-in sign_in"></i>&emsp;login<% end %></li>
           <% end %>
         </ul>

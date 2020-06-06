@@ -44,11 +44,11 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
-
   private
 
   def user_params
-  	params.require(:user).permit(:name, :introduction, :profile_image)
+  	params.require(:user).permit(:name, :introduction, :profile_image,
+           :postcode, :prefecture_name, :address_city, :addres_street, :latitude, :longitude)
   end
 
   def correct_user

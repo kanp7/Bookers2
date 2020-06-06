@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  # 住所検索機能
+  include JpPrefecture
+  jp_prefecture :prefecture_code
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -14,6 +18,34 @@ class User < ApplicationRecord
             foreign_key: "followed_id", dependent: :destroy
   has_many :followers, through: :passive_relationships, source: :follower
 
+  geocoded_by :address
+
+  after_validation :geocode
+
+  attachment :profile_image
+
+  validates :name, presence: true, length: { minimum: 2 , maximum: 20}
+  validates :introduction, length: {maximum: 20}
+
+  # User or Book 検索機能 search_controllerにメソッドを定義
+  class << self
+
+    def search(search,word)
+      if search == "forward_match"
+        @user = User.where("name LIKE?", "#{word}%")
+      elsif search == "backward_match"
+        @user = User.where("name LIKE?", "%#{word}")
+      elsif search == "perfect_match"
+        @user = User.where(name: word)
+      elsif search == "partial_match"
+        @user = User.where("name LIKE?", "%#{word}%")
+      else
+        @user = User.all
+      end
+    end
+
+  end
+
   #ユーザーをフォローする
   def follow(other_user)
     following << other_user
@@ -28,25 +60,17 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
-  # 検索機能 search_controllerにメソッドを定義
-  def self.search(search,word)
-    if search == "forward_match"
-      @user = User.where("name LIKE?", "#{word}%")
-    elsif search == "backward_match"
-      @user = User.where("name LIKE?", "%#{word}")
-    elsif search == "perfect_match"
-      @user = User.where(name: word)
-    elsif search == "partial_match"
-      @user = User.where("name LIKE?", "%#{word}%")
-    else
-      @user = User.all
-    end
+  def prefecture_name
+    JpPrefecture::Prefecture.find(code: prefecture_code).try(:name)
   end
 
-  attachment :profile_image
+  def prefecture_name=(prefecture_name)
+    self.prefecture_code = JpPrefecture::Prefecture.find(name: prefecture_name).code
+  end
 
-  validates :name, presence: true, length: { minimum: 2 , maximum: 20}
-  validates :introduction, length: {maximum: 20}
+  def address
+    [prefecture_code, address_city, address_street].compact.join(',')
+  end
 
 
 end
