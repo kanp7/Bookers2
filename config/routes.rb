@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'chats/show'
   get 'search/search'
   devise_for :users, controllers: {
         registrations: 'users/registrations'
@@ -10,6 +11,7 @@ Rails.application.routes.draw do
   	 get :following, :followers
   	end
   end
+  resources :chats, only: [:create, :show]
 
   resources :books do
   	resource :favorites, only: [:create, :destroy]
