@@ -1,8 +1,9 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-3">
-      <%= render 'shared/form', user: @user, book: @book_render %>
+      <%= render 'shared/form', user: @user, book: Book.new %>
     </div>
+
     <div class="col-xs-9">
     <h2>Book detail</h2>
     <table class="table">
@@ -13,11 +14,18 @@
           <td><%= @book.title %></td>
           <td><%= @book.body %></td>
           <!-- いいね機能 -->
-          <td id="favorite_<%= "#{@book.id}"%>"> <%= render "favorites/favorite", book: @book %></td>
+          <td id="favorite_<%= "#{@book.id}"%>">
+            <%= render "favorites/favorite", book: @book %>
+          </td>
           <td>コメント数: <%= @book.book_comments.count %></td>
+
           <% if @book.user == current_user %>
-          <td><span class="btn-sm btn-success"><%= link_to "Edit", edit_book_path(@book) %></td></span>
-          <td><span class="btn-sm btn-danger"><%= link_to "Destroy", book_path(@book), method: :delete, data: {confirm: "本当に削除しますか？"}  %></td></span>
+            <td><span class="btn-sm btn-success">
+              <%= link_to "Edit", edit_book_path(@book) %>
+            </span></td>
+            <td><span class="btn-sm btn-danger">
+              <%= link_to "Destroy", book_path(@book), method: :delete, data: {confirm: "本当に削除しますか？"}  %>
+            </span></td>
           <% end %>
         </tr>
       </tbody>
@@ -30,14 +38,12 @@
 
 
      <!-- コメント入力フォーム -->
+    <div class="comment-form">
      <%= form_with model:[@book, @book_comment] do |f| %>
-        <div class="field_row">
-          <%= f.text_area :comment, class:"col-xs-11" %>
-        </div><br>
-        <div>
+          <%= f.text_area :comment, size: "90x5" %>
           <%= f.submit '送信' %>
-        </div>
      <% end %>
     </div>
+
   </div>
 </div>

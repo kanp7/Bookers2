@@ -49,7 +49,7 @@
 
     <h2>New book</h2>
 
-    <%= form_for book, :url => {controller: "books", action: "create"} do |f| %>
+    <%= form_for book do |f| %>
     <%= render 'shared/error_messages', model: f.object %>
       <div class="field row">
         <%= f.label :title %><br>

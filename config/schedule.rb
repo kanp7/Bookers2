@@ -19,9 +19,11 @@
 # every 4.days do
 #   runner "AnotherModel.prune_old_records"
 # end
-every 1.days, at: '9:00 am' do
+
 # every 1.days, at: '9:00 am' do
-	runner "DailyMailer.notify_user.deliver"
-end
+# # every 1.days, at: '9:00 am' do
+# 	runner "DailyMailer.notify_user.deliver"
+# end
+
 
 # Learn more: http://github.com/javan/whenever
